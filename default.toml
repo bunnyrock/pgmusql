@@ -1,0 +1,73 @@
+# service adress.
+address = ":54321"
+
+# database connection url.
+dburl = "postgres://user:password@localhost:5432/dbname"
+
+# realative path to sql files root directory.
+sqlroot = "/path/to/sql/files"
+
+# Keep-Alive header enable.
+keepalive = false
+
+# Global service DB query timeout. If the query has its own timeout, then it will use.
+# Also used as a time-out for graceful shutdown of the server.
+querytimeout = "60s"
+
+# run autotest for all loaded queries.
+autotest = false
+
+# Number of test threads.
+testworkers = 1
+
+# If true, then if an error occurs during query loading or autotesting, the query will be added to the service. 
+# Otherwise, the entire load process will be interrupted and no query will be loaded. 
+# WARNING!!! THIS OPTION IS FOR DEVELOPMENT AND TESTING PURPOSE. IN PRODUCTION, ALWAYS SET THIS VALUE FALSE.
+ignorerrors = false
+
+# If true, the text "Database error" is returned instead of the detailed error. 
+# Otherwise, a detailed query execution error is returned.
+mutedberrors = false
+
+# use TLS connection
+usetls = true
+
+# TLS cert file (required if usetls = true)
+certfile = "certfile.crt"
+
+# TLS key file (required if usetls = true)
+keyfile = "keyfile.key"
+
+# If true, then only the parameters declared in the "out" directive will be returned.
+filteroutparams = true
+
+# If true, then only parameters that are declared in the "in" directive will be used. 
+# If the query is called with an undeclared parameter, an error will be returned.
+filterinparams = true
+
+# If true, then before making requests to the /sql/ address, the client needs to be authenticated at /login. 
+# If the cookiesession = true, then the session is stored in the cookie, else
+# all requests to the /sql/ address must contain the "Authorization" header with the authorization key obtained during authentication 
+# in the "Authorization" header of the server /login response.
+loginrequired = true
+
+# How long session is valid.
+sessionlifetime = "300s"
+
+# Store the session key in a cookie. 
+# If this parameter is true, then the session key is not returned to the client in the "Authorization" header in response to the / login request.
+# The client does not need to pass the session key in the "Authorization" header. (see loginrequired comment)
+cookiesession = true
+
+# Query to execute on /login (required if loginrequired = true). 
+# If the query is executed without errors and returns any result, the /login request will generate a session. 
+# Otherwise, the /login returns error.
+loginquery = "/login"
+
+# Query to execute on /logout (Optional parameter if loginrequired = true)
+# If parameter is an empty string, then the session is deleted without invoking the query. If parameter is not empty
+# and the query is executed without errors and returns any result, the /logout request will delete a session key. 
+# Otherwise, the /logout returns error.
+logoutquery = ""
+
+docenable = true

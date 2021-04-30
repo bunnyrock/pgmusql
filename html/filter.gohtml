@@ -1,0 +1,11 @@
+{{define "Filter"}}
+    <div class ="filter">
+        <b>Filters</b><br>
+        <div class="searchContainer">
+            <input id="SearchInputBox" type="search" placeholder="sql service name" class="sinput" onsearch='filterCheckboxHandler()'>
+            <!--<button class="fbutton">FIND</button>-->
+        </div>
+        <input id = "WarnCheckBox" type="checkbox" onclick='filterCheckboxHandler()'>Warnings
+        <input id = "ErrCheckBox" type="checkbox" onclick='filterCheckboxHandler()'>Errors
+    </div>
+{{end}}

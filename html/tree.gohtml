@@ -1,0 +1,32 @@
+{{define "TreeView"}}
+    {{$folderClass := "container"}}
+    {{$caretClass := "caret"}}
+    {{$nestedClass := "nested"}}
+
+    {{if .IsRoot}}
+        {{$folderClass = "root"}}
+        {{$caretClass = "caret caret-down"}}
+        {{$nestedClass = "nested active"}}
+    {{end}}
+
+    {{$itemClass := "item"}}
+
+    {{if .Description.HasWarn}} {{$itemClass = (printf "%s %s" $itemClass "haswarn") }} {{end}}
+    {{if .Description.HasErr}} {{$itemClass = (printf "%s %s" $itemClass "haserr") }} {{end}}
+
+    {{if .IsFile}}
+        <li>
+            <p class = "{{$itemClass}}" onclick = 'DescriptionHandler("{{.Path}}", this)'>&#x26C3; {{.Name}}</p>
+        </li>
+    {{else}}
+        <li class = "{{$folderClass}}"> <p class= "{{$caretClass}}" onclick="TreeViewHandler(this)">{{.Name}}</p>
+            {{ if gt (len .Childs) 0}}
+                <ul class="{{$nestedClass}}">
+                    {{ range .Childs }}
+                        {{ template "TreeView" . }}
+                    {{ end }}
+                </ul>
+            {{ end }}
+        </li>
+    {{end}}
+{{end}}

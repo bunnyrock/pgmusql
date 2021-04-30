@@ -1,0 +1,29 @@
+{{define "Main"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="html/style.css">
+<title>pgmusql:doc</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<section>
+  <nav>
+    {{template "Filter"}}
+    <div class="nav-section">
+      <ul id = "treeview">
+        {{ template "TreeView" . }}
+      </ul>
+    <div>
+  </nav>
+  
+  <article>
+    {{ template "QueryDescription" . }}
+  </article>
+</section>
+
+<script src="html/treeview.js"></script>
+</body>
+</html>
+{{end}}

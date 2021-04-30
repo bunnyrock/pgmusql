@@ -1,0 +1,132 @@
+{{define "QueryDescription"}}
+    {{if .IsFile}}
+        {{$name := .Description.Name}}
+        {{$description := .Description.Description}}
+        {{$inParams := .Description.In}}
+        {{$outParams := .Description.Out}}
+        {{$loadtime := .Description.LoadTime}}
+        {{$timeout := .Description.Timeout}}
+        {{$parsewarn := .Description.ParseWarn}}
+        {{$testpass := .Description.TestPass}}
+        {{$testparams := .Description.TestParams}}
+        {{$testduration := .Description.TestDuration}}
+        {{$errstr := .Description.Err}}
+        {{$testresult := .Description.TestResult}}
+
+        <div class = "description" id = "{{.Path}}" style="display: none;">
+            <!-- Summary -->
+            <div class ="descblock">
+                <h2>Properties</h2>
+                <div class="key-value-group">
+                    <div class="key-value">
+                        <span class="key">Relative address:</span>
+                        <span class="value">{{$name}}</span>
+                    </div>
+                    
+                    <div class="key-value">
+                        <span class="key">Load date:</span>
+                        <span class="value">{{$loadtime}}</span>
+                    </div>
+                    
+                    <div class="key-value">
+                        <span class="key">Timeout:</span>
+                        <span class="value">{{$timeout}}</span>
+                    </div>
+                    
+                    <div class="key-value">
+                        <span class="key">Parse warning:</span>
+                        <span class="value">{{if eq $parsewarn ""}} <b class="ok">OK</b> {{else}}  <b class="warn">{{$parsewarn}}</b> {{end}}</span>
+                    </div>
+                </div>
+                <p><b>Description: </b><br><br>{{if eq $description ""}} <b class="warn">Empty</b> {{else}} {{$description}} {{end}}</p>
+            </div>
+            
+            <!-- Input -->
+            <div class ="descblock">
+                <h2>Input params</h2> 
+                <p>{{if eq (len $inParams) 0}} No params
+                    {{else}} 
+                        <table>
+                            <tr> <th>Name</th> <th>Description</th> <th>Warning</th> </tr>
+                            {{range $inParams}}
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                    <td>{{if eq .Description ""}} <b class="warn">Empty</b> {{else}} {{.Description}} {{end}}</td>
+                                    <td>{{if eq .Warning ""}} <b class="ok">OK</b> {{else}} <b class="warn">{{.Warning}}</b> {{end}}</td>
+                                </tr>
+                            {{end}}
+                        </table>
+                    {{end}} 
+                </p>
+                <i class="comment"> Only requests with Content-Type: application/x-www-form-urlencoded header are accepted</i>
+            </div>
+
+            <!-- Output -->
+            <div class ="descblock">
+                <h2>Output fields</h2> 
+                <p>{{if eq (len $outParams) 0}} No fields
+                    {{else}} 
+                        <table>
+                            <tr> <th>Name</th> <th>Description</th> <th>Warning</th> </tr>
+                            {{range $outParams}}
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                    <td>{{if eq .Description ""}} <b class="warn">Empty</b> {{else}} {{.Description}} {{end}}</td>
+                                    <td>{{if eq .Warning ""}} <b class="ok">OK</b> {{else}} <b class="warn">{{.Warning}}</b> {{end}}</td>
+                                </tr>
+                            {{end}}
+                        </table>
+                    {{end}} 
+                </p>
+                <i class="comment"> 
+                    On error, response have a status code other than 200 and a text/plain content type. Response body contains error text.
+                    Successful response has status code 200 and content type application/json. 
+                    Successful response body is always a json array. 
+                    The output parameters describe the keys of the json objects inside a array.
+                </i>
+            </div>
+
+            <!-- test report -->
+            <div class ="descblock">
+                <h2>Testing</h2> 
+                <div class="key-value-group">
+                    <div class="key-value">
+                        <span class="key">Test pass:</span>
+                        <span class="value">{{$testpass}}</span>
+                    </div>
+
+                    <div class="key-value">
+                        <span class="key">Test duration:</span>
+                        <span class="value">{{$testduration}}</span>
+                    </div>
+
+                    <div class="key-value">
+                        <span class="key">Error:</span>
+                        <span class="value">{{if eq $errstr ""}} <b class="ok">OK</b> {{else}}  <b class="err">{{$errstr}}</b> {{end}}</span>
+                    </div>
+                </div>
+
+                <p><b>Test params:</b>{{if eq (len $testparams) 0}} No params
+                    {{else}} 
+                        <table>
+                            <tr> <th>Name</th> <th>Value</th></tr>
+                            {{range $testparams}}
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                    <td>{{.Description}}</td>
+                                </tr>
+                            {{end}}
+                        </table>
+                    {{end}} 
+                </p>
+                <p><b>Test result: </b>{{if eq $testresult ""}} No data {{else}} <pre><code>{{$testresult}}</code></pre>{{end}}</p>
+                <i class="comment"> Test result has a limited number of rows</i>
+            </div>
+        </div>
+    {{end}}
+
+    <!-- render childs -->
+    {{range .Childs}}
+        {{template "QueryDescription" .}}
+    {{end}}
+{{end}}
